@@ -28,6 +28,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: build and push image
         run: |
+          cd caddy-cloudflare-plugin
           echo ${{ secrets.PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
           docker build . --tag ghcr.io/itsjwala/caddy:$GITHUB_SHA
           docker push ghcr.io/itsjwala/caddy:$GITHUB_SHA
