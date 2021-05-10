@@ -30,5 +30,8 @@ jobs:
         run: |
           cd caddy-cloudflare-plugin
           echo ${{ secrets.PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-          docker build . --tag ghcr.io/itsjwala/caddy:latest
-          docker push ghcr.io/itsjwala/caddy:latest
+          docker build . --tag ghcr.io/itsjwala/caddy:amd64
+          docker push ghcr.io/itsjwala/caddy:amd64
+          DOCKER_TARGET_PLATFORM: linux/arm/v7
+          docker build . --tag ghcr.io/itsjwala/caddy:arm
+          docker push ghcr.io/itsjwala/caddy:arm
