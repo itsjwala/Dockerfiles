@@ -20,9 +20,9 @@ jobs:
       matrix:
         include:
           - context: caddy-cloudflare-plugin
-            image: itsjwala/caddy
+            image: ghcr.io/itsjwala/caddy
           - context: samba
-            image: itsjwala/samba
+            image: ghcr.io/itsjwala/samba
     env:      
       DOCKER_REGISTRY: ghcr.io
       DOCKER_IMAGE: ${{ matrix.image }}
