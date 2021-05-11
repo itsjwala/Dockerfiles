@@ -15,10 +15,17 @@ on:
 
 jobs:   
   build:    
-    runs-on: ubuntu-18.04    
+    runs-on: ubuntu-18.04
+    matrix:
+      include:
+        - context: caddy-cloudflare-plugin
+          image: itsjwala/caddy
+        - context: samba
+          image: itsjwala/samba
     env:      
       DOCKER_REGISTRY: ghcr.io
-      DOCKER_IMAGE: itsjwala/caddy
+      DOCKER_IMAGE: ${{ matrix.image }}
+      BUILD_CONTEXT: ${{ matrix.context }}
       DOCKER_TARGET_PLATFORM: linux/arm/v7,linux/amd64,linux/arm64
     steps:    
     - name: Checkout the code       
@@ -32,7 +39,8 @@ jobs:
       id: prepare      
       run: |        
         echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}        
-        echo ::set-output name=docker_image::${DOCKER_IMAGE}        
+        echo ::set-output name=docker_image::${DOCKER_IMAGE}       
+        echo ::set-output name=build_context::${BUILD_CONTEXT}
         echo ::set-output name=buildx-version::${GITHUB_RUN_NUMBER}
     - name: Docker Login      
       if: success()      
@@ -46,4 +54,4 @@ jobs:
         --platform ${{ steps.prepare.outputs.docker_platform }} \
         --tag ${{ steps.prepare.outputs.docker_image }}:latest \
         --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.buildx-version }} \
-        --push caddy-cloudflare-plugin
+        --push ${{ steps.prepare.outputs.build_context }}
