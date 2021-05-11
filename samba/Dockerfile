@@ -1,12 +1,7 @@
-FROM arm32v7/alpine:3.13
+FROM alpine:3.7
 
-RUN apk add --update \
-    samba-common-tools \
-    samba-client \
-    samba-server \
-    && rm -rf /var/cache/apk/*
+RUN apk --no-cache upgrade && apk --no-cache add samba samba-common-tools
 
 EXPOSE 445/tcp
 
 ENTRYPOINT ["smbd", "--foreground", "--log-stdout"]
-CMD []
